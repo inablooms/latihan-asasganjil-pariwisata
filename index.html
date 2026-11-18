@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Kuis Interaktif Projek IPAS (Bidang Pariwisata)</title>
+<style>
+  :root {
+    --bg-gradient: linear-gradient(135deg, #2b1055 0%, #4b1d95 50%, #1e3a8a 100%);
+    --card-bg: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --primary: #6d28d9;
+    --primary-hover: #5b21b6;
+    --opt-a: #e11d48;
+    --opt-a-dark: #be123c;
+    --opt-b: #2563eb;
+    --opt-b-dark: #1d4ed8;
+    --opt-c: #d97706;
+    --opt-c-dark: #b45309;
+    --opt-d: #059669;
+    --opt-d-dark: #047857;
+    --opt-e: #7c3aed;
+    --opt-e-dark: #6d28d9;
+    --radius: 16px;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    min-height: 100dvh;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .container {
+    width: 100%;
+    max-width: 880px;
+    margin: auto;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    animation: fadeIn 0.35s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  button, a.btn {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* BANNER PANDUAN IN-APP BROWSER WHATSAPP / IOS QUICKLOOK */
+  .webview-banner {
+    background: #fef3c7;
+    border: 2px solid #f59e0b;
+    color: #78350f;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .webview-banner strong {
+    color: #92400e;
+  }
+
+  .webview-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .btn-mini {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    background: #d97706;
+    color: #ffffff;
+  }
+
+  /* HALAMAN PEMBUKA */
+  .badge-top {
+    display: inline-block;
+    background: #ede9fe;
+    color: #5b21b6;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .title-main {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .rules-box {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-left: 6px solid #7c3aed;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+
+  .rules-box h3 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rules-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .rules-list li {
+    font-size: 0.93rem;
+    color: #334155;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+  }
+
+  .attempt-notice {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    color: #92400e;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    line-height: 1.45;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+    color: #374151;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #ffffff;
+    color: #111827;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  }
+
+  .error-msg {
+    color: #dc2626;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    min-height: 48px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+
+  .btn:active {
+    transform: translateY(2px);
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: #7c3aed;
+    color: #ffffff;
+    box-shadow: 0 5px 0 #5b21b6;
+  }
+
+  .btn-primary:hover {
+    background: #6d28d9;
+  }
+
+  /* KOTAK UNDUH & KIRIM PDF KE GURU */
+  .submit-teacher-box {
+    background: #ecfdf5;
+    border: 2px solid #10b981;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 640px;
+    text-align: center;
+  }
+
+  .submit-teacher-box h3 {
+    color: #065f46;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .submit-teacher-box p {
+    color: #047857;
+    font-size: 0.92rem;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .pdf-status-badge {
+    display: inline-block;
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #34d399;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    word-break: break-word;
+  }
+
+  .submit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .btn-pdf {
+    background: #dc2626;
+    color: #ffffff;
+    box-shadow: 0 4px 0 #991b1b;
+    font-size: 0.96rem;
+    padding: 12px 18px;
+  }
+
+  .btn-pdf:hover {
+    background: #b91c1c;
+  }
+
+  .btn-copy-summary {
+    background: #0284c7;
+    color: #ffffff;
+    box-shadow: 0 4px 0 #0369a1;
+    font-size: 0.96rem;
+    padding: 12px 18px;
+  }
+
+  .ios-safari-note {
+    margin-top: 12px;
+    background: #ffffff;
+    border: 1px dashed #10b981;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.83rem;
+    color: #065f46;
+    text-align: left;
+    line-height: 1.45;
+  }
+
+  .repeat-info-box {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 18px auto;
+    max-width: 580px;
+    color: #475569;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  /* HALAMAN KUIS */
+  .quiz-header {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  }
+
+  .player-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #7c3aed;
+    color: white;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .player-meta div:first-child {
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: #111827;
+  }
+
+  .player-meta div:last-child {
+    font-size: 0.82rem;
+    color: #6b7280;
+    font-weight: 600;
+  }
+
+  .status-pills {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pill {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+
+  .pill-progress {
+    background: #ede9fe;
+    color: #5b21b6;
+  }
+
+  .pill-timer {
+    background: #fef3c7;
+    color: #b45309;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pill-timer.danger {
+    background: #fee2e2;
+    color: #dc2626;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+
+  .progress-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: #34d399;
+    width: 4%;
+    transition: width 0.3s ease;
+  }
+
+  .question-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.6;
+    color: #111827;
+    margin-bottom: 22px;
+    white-space: pre-line;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 54px;
+    text-align: left;
+    padding: 14px 18px;
+    border: 3px solid transparent;
+    border-radius: 14px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: transform 0.12s, opacity 0.2s, box-shadow 0.2s;
+  }
+
+  .option-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  .option-btn.opt-0 { background: var(--opt-a); box-shadow: 0 4px 0 var(--opt-a-dark); }
+  .option-btn.opt-1 { background: var(--opt-b); box-shadow: 0 4px 0 var(--opt-b-dark); }
+  .option-btn.opt-2 { background: var(--opt-c); box-shadow: 0 4px 0 var(--opt-c-dark); }
+  .option-btn.opt-3 { background: var(--opt-d); box-shadow: 0 4px 0 var(--opt-d-dark); }
+  .option-btn.opt-4 { background: var(--opt-e); box-shadow: 0 4px 0 var(--opt-e-dark); }
+
+  .option-btn.dimmed {
+    opacity: 0.58;
+  }
+
+  .option-btn.selected {
+    opacity: 1;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 4px #111827, 0 6px 14px rgba(0,0,0,0.3);
+    transform: scale(1.01);
+  }
+
+  .shape-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+
+  .option-label-wrap {
+    flex: 1;
+  }
+
+  .option-letter {
+    font-weight: 800;
+    margin-right: 6px;
+    text-decoration: underline;
+  }
+
+  .selected-tag {
+    background: #ffffff;
+    color: #111827;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+
+  .nav-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 2px solid #f1f5f9;
+  }
+
+  .btn-nav {
+    padding: 12px 20px;
+    min-height: 46px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.98rem;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .btn-nav:active {
+    transform: translateY(1px);
+  }
+
+  .btn-prev {
+    background: #e2e8f0;
+    color: #334155;
+  }
+
+  .btn-prev:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-next {
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  .btn-next:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-finish {
+    background: #059669;
+    color: #ffffff;
+  }
+
+  .btn-finish:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .navigator-box {
+    margin-top: 18px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  }
+
+  .navigator-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 6px;
+  }
+
+  .nav-num {
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid #cbd5e1;
+    background: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #334155;
+    cursor: pointer;
+  }
+
+  .nav-num.answered {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: #ffffff;
+  }
+
+  .nav-num.current {
+    border-color: #111827;
+    box-shadow: 0 0 0 2px #facc15;
+  }
+
+  /* MODAL KONFIRMASI & PERINGATAN LAYAR */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 999;
+  }
+
+  .security-backdrop {
+    background: rgba(15, 23, 42, 0.96);
+    z-index: 1000;
+  }
+
+  .modal-box {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 430px;
+    width: 100%;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-box h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #111827;
+  }
+
+  .modal-box p {
+    color: #4b5563;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .security-badge-type {
+    display: inline-block;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f87171;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .security-tips {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    color: #7f1d1d;
+    margin-bottom: 14px;
+    text-align: left;
+    line-height: 1.45;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    min-height: 46px;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+
+  /* HALAMAN HASIL & PEMBAHASAN */
+  .result-hero {
+    text-align: center;
+    padding-bottom: 22px;
+    border-bottom: 2px solid #f1f5f9;
+    margin-bottom: 20px;
+  }
+
+  .score-circle {
+    width: 136px;
+    height: 136px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 14px auto;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.35);
+  }
+
+  .score-circle span:first-child {
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .score-circle span:last-child {
+    font-size: 0.82rem;
+    opacity: 0.9;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .appreciation-msg {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #4c1d95;
+    margin-bottom: 6px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 18px 0;
+  }
+
+  .stat-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .stat-card .label {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 700;
+  }
+
+  .stat-card .val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 2px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .btn-secondary {
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 5px 0 #1d4ed8;
+  }
+
+  .btn-secondary:hover {
+    background: #1d4ed8;
+  }
+
+  /* TOMBOL TOGGLE REKAP & PEMBAHASAN */
+  .btn-toggle-review {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    color: #1e293b;
+    font-size: 1.02rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .btn-toggle-review:hover,
+  .btn-toggle-review[aria-expanded="true"] {
+    background: #ede9fe;
+    border-color: #7c3aed;
+    color: #5b21b6;
+  }
+
+  .toggle-chevron {
+    font-size: 0.95rem;
+    transition: transform 0.25s ease;
+  }
+
+  .btn-toggle-review[aria-expanded="true"] .toggle-chevron {
+    transform: rotate(180deg);
+  }
+
+  .review-content {
+    margin-top: 16px;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    scroll-margin-top: 20px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .review-header.highlight-focus {
+    background-color: #ede9fe;
+    box-shadow: 0 0 0 3px #7c3aed;
+  }
+
+  .review-item {
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    background: #ffffff;
+  }
+
+  .review-item.correct {
+    border-left: 6px solid #059669;
+  }
+
+  .review-item.wrong {
+    border-left: 6px solid #e11d48;
+  }
+
+  .review-item.unanswered {
+    border-left: 6px solid #d97706;
+  }
+
+  .review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  .status-badge {
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .status-badge.correct { background: #d1fae5; color: #065f46; }
+  .status-badge.wrong { background: #ffe4e6; color: #9f1239; }
+  .status-badge.unanswered { background: #fef3c7; color: #92400e; }
+
+  .review-q {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    line-height: 1.45;
+    white-space: pre-line;
+  }
+
+  .review-ans {
+    font-size: 0.92rem;
+    margin-bottom: 4px;
+  }
+
+  .explanation-box {
+    margin-top: 10px;
+    background: #f1f5f9;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #334155;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .card { padding: 18px; }
+    .title-main { font-size: 1.45rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .question-text { font-size: 1.05rem; }
+    .option-btn { padding: 12px 14px; font-size: 0.95rem; }
+    .submit-actions { flex-direction: column; }
+    .submit-actions .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 1. HALAMAN PEMBUKA -->
+  <section id="start-screen" class="card">
+    <!-- PERINGATAN JIKA DIBUKA LANGSUNG DARI PREVIEW WHATSAPP / IN-APP BROWSER -->
+    <div id="inapp-warning-banner" class="webview-banner hidden">
+      <strong>📱 Perhatian Pengguna HP (WhatsApp / iPhone / Android):</strong><br>
+      <span id="inapp-warning-text">Kamu sedang membuka file ini di dalam pratinjau aplikasi. Agar unduhan PDF dan tombol WhatsApp berjalan normal, buka file ini menggunakan browser <strong>Chrome</strong> (Android) atau <strong>Safari</strong> (iPhone).</span>
+      <div class="webview-actions">
+        <button id="btn-open-external-browser" type="button" class="btn-mini">🌐 Buka di Browser Utama</button>
+      </div>
+    </div>
+
+    <span class="badge-top">ASAS GANJIL • PROJEK IPAS</span>
+    <h1 class="title-main">Kuis Interaktif Projek IPAS (Bidang Pariwisata)</h1>
+    <p class="subtitle">Uji pemahamanmu mengenai makhluk hidup &amp; lingkungannya, zat &amp; perubahannya, serta perilaku ekonomi dalam dunia pariwisata.</p>
+
+    <div class="rules-box">
+      <h3>📋 Petunjuk Permainan</h3>
+      <ul class="rules-list">
+        <li>🎯 <strong>Jumlah Soal:</strong> 25 soal</li>
+        <li>⏱️ <strong>Waktu Pengerjaan:</strong> 40 menit</li>
+        <li>🏆 <strong>Sistem Skor:</strong> 4 poin (maksimal 100).</li>
+        <li>🔒 <strong>Aturan Pengerjaan:</strong> Dilarang berpindah tab/aplikasi atau mengaktifkan split-screen selama ujian.</li>
+        <li>📄 <strong>Pengiriman Nilai:</strong> File PDF hasil dibuat otomatis pada <strong>percobaan pertama</strong> untuk dikirim ke WA guru.</li>
+      </ul>
+    </div>
+
+    <div id="repeat-warning-start" class="attempt-notice hidden">
+      ℹ️ <strong>Info Percobaan Ulang:</strong> Kamu sudah menyelesaikan percobaan pertama sebelumnya. Sesi kali ini hanya bersifat <strong>latihan mandiri</strong> dan dokumen PDF hasil resmi tidak akan diterbitkan kembali.
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="player-name">Nama Pemain *</label>
+        <input type="text" id="player-name" placeholder="Contoh: Rina Sari" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="player-class">Kelas *</label>
+        <input type="text" id="player-class" placeholder="Contoh: X Perhotelan 1" autocomplete="off">
+      </div>
+    </div>
+
+    <p id="form-error" class="error-msg">⚠️ Harap isi Nama Pemain (NAMA LENGKAP) dan Kelas terlebih dahulu sebelum memulai kuis!</p>
+
+    <button id="btn-start" class="btn btn-primary" type="button">🚀 Mulai Kuis</button>
+  </section>
+
+  <!-- 2. HALAMAN PENGERJAAN KUIS -->
+  <section id="quiz-screen" class="hidden">
+    <div class="quiz-header">
+      <div class="player-badge">
+        <div class="avatar-circle" id="avatar-initial">P</div>
+        <div class="player-meta">
+          <div id="display-name">Nama Pemain</div>
+          <div id="display-class">Kelas</div>
+        </div>
+      </div>
+      <div class="status-pills">
+        <div class="pill pill-progress" id="question-counter">Soal 1 / 25</div>
+        <div class="pill pill-timer" id="timer-display">⏱️ 40:00</div>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="card">
+      <div class="question-text" id="question-text">Memuat soal...</div>
+      <div class="options-grid" id="options-container"></div>
+
+      <div class="nav-controls">
+        <button id="btn-prev" class="btn-nav btn-prev" type="button">⬅️ Sebelumnya</button>
+        <button id="btn-next" class="btn-nav btn-next" type="button">Lanjut ➡️</button>
+        <button id="btn-finish" class="btn-nav btn-finish hidden" type="button">✅ Selesai &amp; Lihat Hasil</button>
+      </div>
+    </div>
+
+    <div class="navigator-box">
+      <div class="navigator-title">
+        <span>Navigasi Nomor Soal</span>
+        <span id="answered-count">Terjawab: 0 / 25</span>
+      </div>
+      <div class="nav-grid" id="nav-grid"></div>
+    </div>
+  </section>
+
+  <!-- 3. HALAMAN HASIL AKHIR & PEMBAHASAN -->
+  <section id="result-screen" class="card hidden">
+    <div class="result-hero">
+      <span class="badge-top">HASIL AKHIR EVALUASI</span>
+      <h2 class="title-main" id="result-player-info">Nama Pemain - Kelas</h2>
+      <div class="score-circle">
+        <span id="final-score">0</span>
+        <span>SKOR AKHIR</span>
+      </div>
+      <p class="appreciation-msg" id="appreciation-msg">Luar Biasa!</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="label">Jawaban Benar</div>
+          <div class="val" style="color:#059669" id="stat-correct">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Salah / Kosong</div>
+          <div class="val" style="color:#e11d48" id="stat-wrong">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Sisa Waktu</div>
+          <div class="val" id="stat-time">00:00</div>
+        </div>
+      </div>
+
+      <!-- PANEL UNDUH & KIRIM PDF KE GURU (HANYA MUNCUL PADA PERCOBAAN PERTAMA) -->
+      <div id="first-attempt-submit-box" class="submit-teacher-box hidden">
+        <h3>📄 Unduh Dokumen Hasil PDF Resmi (Percobaan Pertama)</h3>
+        <p>File PDF bukti hasil pengerjaan sudah siap. Silakan unduh/simpan file PDF tersebut sebagai bukti pengerjaan.</p>
+        <div id="pdf-status-badge" class="pdf-status-badge">⏳ Menyiapkan file PDF resmi...</div>
+        <div class="submit-actions">
+          <button id="btn-download-pdf" type="button" class="btn btn-pdf">📥 Unduh / Buka PDF Hasil</button>
+          <button id="btn-share-pdf" type="button" class="btn btn-secondary hidden" style="padding: 12px 18px; font-size: 0.96rem;">📤 Simpan / Bagikan File PDF</button>
+          <button id="btn-copy-result" type="button" class="btn btn-copy-summary">📋 Salin Teks Nilai</button>
+        </div>
+        <div id="mobile-pdf-guide" class="ios-safari-note">
+          <strong>💡 Tips HP Android &amp; iPhone (iOS):</strong><br>
+          • Pada <strong>Android</strong>, file PDF otomatis tersimpan di folder <strong>Unduhan / Downloads (File Saya)</strong>.<br>
+          • Pada <strong>iPhone (Safari)</strong>, jika PDF terbuka di layar baru, tekan ikon <strong>Bagikan (Share ⬆️)</strong> di bagian bawah layar lalu pilih <strong>Simpan ke File (Save to Files)</strong>.
+        </div>
+      </div>
+
+      <!-- KETERANGAN JIKA SUDAH MENGULANG -->
+      <div id="repeat-attempt-info-box" class="repeat-info-box hidden">
+        🔒 <strong>Mode Latihan Ulang:</strong> Kamu sudah menggunakan kesempatan penerbitan PDF hasil resmi pada percobaan pertama, sehingga dokumen PDF tidak diterbitkan pada percobaan ulang ini.
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-restart" type="button" style="width:auto; min-width:200px;">🔄 Main Ulang</button>
+        <button id="btn-scroll-review" class="btn btn-secondary" type="button" style="width:auto;">📖 Rekap Jawaban &amp; Pembahasan Singkat</button>
+      </div>
+    </div>
+
+    <!-- TOMBOL TOGGLE REKAP JAWABAN & PEMBAHASAN -->
+    <button id="btn-toggle-review" class="btn-toggle-review" type="button" aria-expanded="false" aria-controls="review-wrapper">
+      <span>📖 Buka / Tutup Rekap Jawaban &amp; Pembahasan</span>
+      <span class="toggle-chevron" aria-hidden="true">▼</span>
+    </button>
+
+    <!-- KONTEN REKAP JAWABAN & PEMBAHASAN (TERSEMBUNYI SECARA DEFAULT) -->
+    <div id="review-wrapper" class="review-content hidden">
+      <div class="review-header" id="review-section">
+        <h3>📖 Rekap Jawaban &amp; Pembahasan Singkat</h3>
+      </div>
+      <div id="review-list"></div>
+
+      <div style="text-align:center; margin-top:24px;">
+        <button class="btn btn-primary btn-restart" type="button" style="max-width:260px;">🔄 Main Ulang</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- MODAL KONFIRMASI SELESAI -->
+<div id="confirm-modal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <h3>Selesaikan Kuis Sekarang?</h3>
+    <p id="confirm-text">Semua 25 soal sudah dijawab! Siap melihat skor akhir dan menyiapkan bukti hasil PDF?</p>
+    <div class="modal-actions">
+      <button id="btn-cancel-finish" style="background:#e2e8f0; color:#1e293b;" type="button">Periksa Lagi</button>
+      <button id="btn-confirm-finish" style="background:#059669; color:#ffffff;" type="button">Ya, Selesai!</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PERINGATAN ANTI-PINDAH LAYAR / KELUAR FULLSCREEN -->
+<div id="security-modal" class="modal-backdrop security-backdrop hidden">
+  <div class="modal-box">
+    <span class="security-badge-type" id="security-type-badge">PELANGGARAN KEAMANAN LAYAR</span>
+    <h3 style="color:#dc2626;">⚠️ Peringatan Mode Ujian!</h3>
+    <p id="security-text">Anda terdeteksi berpindah jendela/tab browser saat kuis berlangsung. Harap tetap berada di layar kuis hingga selesai!</p>
+    <div class="security-tips">
+      <strong>Pastikan hal berikut sebelum melanjutkan:</strong><br>
+      • Matikan mode <strong>Layar Belah (Split-Screen / 2 Layar)</strong>.<br>
+      • Tutup semua <strong>Notifikasi Mengambang / Floating Chat / Pop-up</strong>.<br>
+      • Jangan berpindah tab atau menekan tombol Home/Recent Apps.
+    </div>
+    <div style="font-weight:800; color:#991b1b; margin-bottom:16px; font-size:0.9rem;" id="violation-counter">Pelanggaran tercatat: 1 kali</div>
+    <div class="modal-actions">
+      <button id="btn-resume-fullscreen" style="background:#7c3aed; color:#ffffff;" type="button">🔒 Lanjutkan Ujian</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOTIFIKASI PANDUAN PENGIRIMAN PDF DI IOS / ANDROID / WINDOWS -->
+<div id="info-modal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <h3 id="info-modal-title">📄 Dokumen PDF Siap Dikirim</h3>
+    <p id="info-modal-text">File PDF hasil telah disiapkan di perangkat Anda.</p>
+    <div class="modal-actions">
+      <button id="btn-close-info" style="background:#7c3aed; color:#ffffff;" type="button">Mengerti</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/**
+ * ============================================================================
+ * DETEKSI LINGKUNGAN MOBILE (ANDROID / IOS / WHATSAPP) & KONSTANTA DASAR
+ * ============================================================================
+ */
+const STORAGE_FIRST_ATTEMPT_KEY = "ipas_pariwisata_asas_first_attempt_done_v3";
+
+const UA = navigator.userAgent || "";
+const IS_IOS = /iPad|iPhone|iPod/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const IS_ANDROID = /Android/i.test(UA);
+const IS_MOBILE = IS_IOS || IS_ANDROID;
+const IS_IN_APP_WEBVIEW = /WhatsApp|FBAN|FBAV|Instagram|Line|MicroMessenger|wv\)/i.test(UA) || (window.location.protocol === "file:" && IS_IOS);
+
+// Tampilkan banner panduan jika dibuka dari in-app browser WhatsApp / QuickLook
+const inappBanner = document.getElementById("inapp-warning-banner");
+const btnOpenExternal = document.getElementById("btn-open-external-browser");
+if (IS_IN_APP_WEBVIEW && inappBanner) {
+  inappBanner.classList.remove("hidden");
+  if (btnOpenExternal) {
+    btnOpenExternal.addEventListener("click", () => {
+      showInfoModal(
+        "🌐 Cara Membuka di Browser Utama",
+        "Ketuk ikon titik tiga (⋮) atau ikon Bagikan / Safari di pojok layar, lalu pilih 'Buka di Chrome' (Android) atau 'Buka di Safari' (iPhone) agar fitur unduh PDF berjalan optimal."
+      );
+    });
+  }
+}
+
+/**
+ * ============================================================================
+ * GENERATOR PDF OFFLINE MANDIRI (TANPA INTERNET / TANPA LIBRARY EKSTERNAL)
+ * ============================================================================
+ */
+function sanitizePdfText(str) {
+  return String(str || "")
+    .replace(/[^\x20-\x7E]/g, " ")
+    .replace(/\\/g, "\\\\")
+    .replace(/\(/g, "\\(")
+    .replace(/\)/g, "\\)");
+}
+
+function createOfflineCertificatePDF(data) {
+  const W = 595.28;
+  const H = 841.89;
+  const cmds = [];
+
+  const rgbFill = (r, g, b) => `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)} rg`;
+  const rgbStroke = (r, g, b) => `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)} RG`;
+
+  const drawRect = (x, yTop, w, h, fillRgb, strokeRgb) => {
+    const y = H - yTop - h;
+    cmds.push("q");
+    if (fillRgb) cmds.push(rgbFill(fillRgb[0], fillRgb[1], fillRgb[2]));
+    if (strokeRgb) {
+      cmds.push("0.8 w");
+      cmds.push(rgbStroke(strokeRgb[0], strokeRgb[1], strokeRgb[2]));
+    }
+    cmds.push(`${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re`);
+    if (fillRgb && strokeRgb) cmds.push("B");
+    else if (fillRgb) cmds.push("f");
+    else cmds.push("S");
+    cmds.push("Q");
+  };
+
+  const drawText = (text, x, yTop, size, fontKey, colorRgb, align = "left") => {
+    const clean = sanitizePdfText(text);
+    const y = H - yTop;
+    const avgCharWidth = size * (fontKey === "F2" ? 0.54 : 0.50);
+    let drawX = x;
+    if (align === "center") {
+      drawX = x - (clean.length * avgCharWidth) / 2;
+    } else if (align === "right") {
+      drawX = x - clean.length * avgCharWidth;
+    }
+    cmds.push("BT");
+    cmds.push(`/${fontKey} ${size} Tf`);
+    cmds.push(rgbFill(colorRgb[0], colorRgb[1], colorRgb[2]));
+    cmds.push(`1 0 0 1 ${drawX.toFixed(2)} ${y.toFixed(2)} Tm`);
+    cmds.push(`(${clean}) Tj`);
+    cmds.push("ET");
+  };
+
+  // 1. Header Banner Ungu
+  drawRect(0, 0, W, 96, [75, 29, 149], null);
+  drawText("SERTIFIKAT HASIL EVALUASI ASAS GANJIL", W / 2, 36, 15, "F2", [255, 255, 255], "center");
+  drawText("Mata Pelajaran: Projek IPAS (Bidang Pariwisata) - Percobaan Pertama", W / 2, 58, 10.5, "F1", [255, 255, 255], "center");
+  drawText(`Kode Validasi Resmi: ${data.validationCode}`, W / 2, 78, 8.5, "F2", [254, 240, 138], "center");
+
+  // 2. Kotak Data Peserta & Ringkasan Hasil
+  drawRect(38, 114, 519, 168, [248, 250, 252], [203, 213, 225]);
+  drawText("Data Peserta & Hasil Pengerjaan", 54, 136, 11.5, "F2", [31, 41, 55], "left");
+
+  drawText(`Nama Siswa        : ${data.playerName}`, 54, 158, 10, "F1", [31, 41, 55], "left");
+  drawText(`Kelas                   : ${data.playerClass}`, 54, 178, 10, "F1", [31, 41, 55], "left");
+  drawText(`Waktu Selesai     : ${data.completedAt}`, 54, 198, 10, "F1", [31, 41, 55], "left");
+  drawText(`Sisa Waktu          : ${formatTime(data.remainingSeconds)} (dari 40:00)`, 54, 218, 10, "F1", [31, 41, 55], "left");
+  drawText(`Benar / Salah      : ${data.correctCount} Benar | ${data.wrongCount} Salah/Kosong`, 54, 238, 10, "F1", [31, 41, 55], "left");
+  drawText(`Peringatan Layar : ${data.violationCount} kali (${data.violationSummary || "Aman"})`, 54, 258, 9.2, "F1", [31, 41, 55], "left");
+
+  // 3. Kotak Skor Akhir di Kanan
+  drawRect(416, 134, 122, 126, [124, 58, 237], null);
+  drawText("SKOR AKHIR", 477, 158, 9.5, "F2", [255, 255, 255], "center");
+  drawText(String(data.finalScore), 477, 204, 30, "F2", [255, 255, 255], "center");
+  drawText("DARI 100", 477, 234, 9, "F1", [255, 255, 255], "center");
+
+  // 4. Judul Tabel Rekap Jawaban & Durasi Pengerjaan Per Butir Soal
+  drawText("Rekap Jawaban & Durasi Pengerjaan Per Butir Soal (25 Soal):", 38, 308, 11, "F2", [31, 41, 55], "left");
+
+  const startX = 38;
+  const startY = 322;
+  const colW = 103.8;
+  const rowH = 42;
+
+  for (let i = 0; i < quizData.length; i++) {
+    const col = i % 5;
+    const row = Math.floor(i / 5);
+    const x = startX + col * colW;
+    const y = startY + row * rowH;
+
+    const userAns = data.userAnswers[i];
+    const isCorrect = userAns === quizData[i].answer;
+    const ansChar = userAns !== null ? optionLetters[userAns] : "-";
+    const statusMark = isCorrect ? "Benar" : "Salah";
+    const durSec = data.questionDurations ? data.questionDurations[i] : 0;
+    const durFormatted = formatQuestionDuration(durSec);
+
+    const fillColor = isCorrect ? [209, 250, 229] : [255, 228, 230];
+    const textColor = isCorrect ? [6, 95, 70] : [159, 18, 57];
+
+    drawRect(x, y, colW, rowH, fillColor, [203, 213, 225]);
+    drawText(`No.${i + 1}: ${ansChar} (${statusMark})`, x + colW / 2, y + 17, 8.5, "F2", textColor, "center");
+    drawText(`Waktu: ${durFormatted}`, x + colW / 2, y + 32, 7.5, "F1", textColor, "center");
+  }
+
+  // 5. Catatan Footer Integritas
+  drawText(
+    "Dokumen ini diterbitkan secara offline oleh sistem pada percobaan pertama siswa dan dilindungi kode validasi.",
+    W / 2,
+    562,
+    8.5,
+    "F1",
+    [100, 116, 139],
+    "center"
+  );
+
+  const streamContent = cmds.join("\n");
+
+  const objects = [];
+  objects.push("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj");
+  objects.push("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj");
+  objects.push(
+    `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W.toFixed(2)} ${H.toFixed(2)}] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>\nendobj`
+  );
+  objects.push(`4 0 obj\n<< /Length ${streamContent.length} >>\nstream\n${streamContent}\nendstream\nendobj`);
+  objects.push("5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj");
+  objects.push("6 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj");
+
+  let pdf = "%PDF-1.4\n";
+  const offsets = [0];
+  for (let i = 0; i < objects.length; i++) {
+    offsets.push(pdf.length);
+    pdf += objects[i] + "\n";
+  }
+
+  const xrefOffset = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n`;
+  pdf += "0000000000 65535 f \n";
+  for (let i = 1; i <= objects.length; i++) {
+    pdf += `${String(offsets[i]).padStart(10, "0")} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+  const bytes = new Uint8Array(pdf.length);
+  for (let i = 0; i < pdf.length; i++) {
+    bytes[i] = pdf.charCodeAt(i) & 0xff;
+  }
+
+  const safeName = data.playerName.replace(/[^a-zA-Z0-9_-]/g, "_") || "Siswa";
+  const safeClass = data.playerClass.replace(/[^a-zA-Z0-9_-]/g, "_") || "Kelas";
+  const fileName = `Hasil_IPAS_Pariwisata_${safeName}_${safeClass}.pdf`;
+  const blob = new Blob([bytes], { type: "application/pdf" });
+
+  let file = null;
+  try {
+    if (typeof File !== "undefined") {
+      file = new File([blob], fileName, { type: "application/pdf" });
+    }
+  } catch (e) {
+    file = null;
+  }
+
+  return { blob, file, fileName, rawPdfString: pdf };
+}
+
+function triggerUniversalPdfDownload(pdfObj, openPreviewOnIOS = false) {
+  if (!pdfObj || !pdfObj.blob) return false;
+  try {
+    const url = URL.createObjectURL(pdfObj.blob);
+
+    if (IS_IOS && openPreviewOnIOS) {
+      window.open(url, "_blank");
+      return true;
+    }
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = pdfObj.fileName;
+    if (IS_IOS) {
+      a.target = "_blank";
+    }
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(() => {
+      if (a.parentNode) {
+        document.body.removeChild(a);
+      }
+      URL.revokeObjectURL(url);
+    }, 10000);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+/**
+ * ============================================================================
+ * DATA SOAL KUIS PROJEK IPAS (BIDANG PARIWISATA)
+ * ============================================================================
+ */
+const quizData = [
+  {
+    question: "1. Pengelola kebun binatang dan kawasan ekowisata melakukan pemeriksaan kesehatan rutin pada satwa rusa. Hasil pengamatan medis menunjukkan bahwa rusa secara rutin mengeluarkan sisa metabolisme berupa keringat melalui pori-pori kulit serta urine melalui saluran pembuangan setelah mencerna makanan. Ciri makhluk hidup yang ditunjukkan melalui aktivitas biologis tersebut adalah...",
+    options: ["Adaptasi", "Iritabilitas", "Reproduksi", "Ekskresi", "Respirasi"],
+    answer: 3,
+    explanation: "Ekskresi adalah proses pengeluaran zat sisa metabolisme yang sudah tidak diperlukan tubuh seperti keringat, urine, dan karbon dioksida."
+  },
+  {
+    question: "2. Pada area lansekap hotel bintang empat, terdapat kolam hias ekosistem buatan yang berisi air terjun, ikan hias, batu alam, serta tumbuhan air (hidrofit) seperti enceng gondok. Komponen biotik yang berperan sebagai organisme autotrof (produsen) di dalam kolam tersebut adalah...",
+    options: ["Batu alam dan air terjun", "Ikan hias kolam", "Tumbuhan air (enceng gondok)", "Derajat keasaman (pH) air", "Oksigen terlarut dalam air"],
+    answer: 2,
+    explanation: "Tumbuhan air seperti enceng gondok mampu berfotosintesis menghasilkan makanan sendiri sehingga berperan sebagai produsen/autotrof."
+  },
+  {
+    question: "3. Burung jalak bali yang hinggap di punggung rusa kutub (atau mamalia besar di taman safari) untuk memakan kutu mendapatkan keuntungan berupa makanan, sementara rusa merasa gatal-gatalnya berkurang. Bentuk interaksi antarkomponen biotik ini adalah...",
+    options: ["Parasitisme", "Komensalisme", "Mutualisme", "Amensalisme", "Kompetisi"],
+    answer: 2,
+    explanation: "Mutualisme adalah hubungan timbal balik antara dua makhluk hidup yang saling menguntungkan kedua belah pihak."
+  },
+  {
+    question: "4. Di kawasan suaka margasatwa, harimau sumatera berburu rusa sambar untuk kelangsungan hidupnya. Hubungan interaksi antara harimau dan rusa tersebut dikategorikan sebagai...",
+    options: ["Kompetisi", "Predasi", "Mutualisme", "Antibiosis", "Alerelopati"],
+    answer: 1,
+    explanation: "Predasi adalah hubungan interaksi antara pemangsa (predator, yaitu harimau) dan mangsa (prey, yaitu rusa)."
+  },
+  {
+    question: "5. Dalam proses pemeliharaan tanaman hias di area pembibitan hotel, terjadi peningkatan ukuran tinggi batang dan jumlah daun secara kuantitatif yang tidak dapat balik (irreversible). Proses biologis ini dinamakan...",
+    options: ["Metamorfosis", "Pertumbuhan", "Perkembangan", "Adaptasi morfologi", "Diferensiasi seluler"],
+    answer: 1,
+    explanation: "Pertumbuhan adalah proses bertambahnya ukuran, volume, tinggi, dan massa sel secara kuantitatif serta bersifat irreversible/tidak dapat kembali ke ukuran semula."
+  },
+  {
+    question: "6. Siswa perhotelan yang merawat tanaman lidah buaya di pot galon hias mencatat bahwa penyiraman air teratur dan penempatan pot di bawah sinar matahari langsung membuat daunnya tumbuh hijau dan tebal. Faktor luar utama yang memicu pertumbuhan optimal tersebut adalah...",
+    options: ["Penggunaan wadah pot dari bahan plastik", "Suplai cahaya matahari dan air yang memadai", "Warna cat dinding di sekitar pot tanaman", "Pemasangan label harga pada tanaman", "Kadar polusi udara kendaraan di jalan raya"],
+    answer: 1,
+    explanation: "Cahaya matahari dan air merupakan faktor eksternal (luar) utama yang dibutuhkan tanaman untuk proses fotosintesis dan pertumbuhan optimal."
+  },
+  {
+    question: "7. Pada plang identifikasi tanaman obat di kebun hotel tertera tulisan Zingiber officinale. Berdasarkan aturan tata nama ilmiah (Binomial Nomenclature), kata Zingiber menunjukkan takson pada tingkat...",
+    options: ["Spesies", "Genus", "Famili", "Ordo", "Kelas"],
+    answer: 1,
+    explanation: "Dalam tata nama ganda (Binomial Nomenclature), kata pertama yang diawali huruf kapital menunjukkan tingkat takson Genus, sedangkan kata kedua menunjukkan penunjuk spesies."
+  },
+  {
+    question: "8. Peningkatan aktivitas kendaraan wisatawan di jalur wisata pegunungan menghasilkan gas buang Karbon Monoksida (CO) dan Timbal (Pb), sementara penggunaan AC sentral di kamar-kamar hotel melepaskan gas refrigeran. Dampak utama dari akumulasi gas rumah kaca dan CFC terhadap iklim global adalah...",
+    options: ["Penurunan suhu permukaan bumi secara ekstrem", "Peningkatan ketebalan lapisan es di kutub utara", "Pemanasan global (global warming) dan penipisan lapisan ozon", "Penambahan kadar oksigen murni di atmosfer kota", "Penghentian arus pasang surut air laut"],
+    answer: 2,
+    explanation: "Gas rumah kaca memerangkap panas di atmosfer memicu pemanasan global, sedangkan gas CFC dari refrigeran merusak lapisan ozon di stratosfer."
+  },
+  {
+    question: "9. Pembangunan fasilitas vila dan restoran di atas bukit resapan air menyebabkan aliran limpasan air hujan langsung menggerus tanah, menimbulkan longsor kecil, dan sedimentasi lumpur yang mematikan ekosistem terumbu karang di bawahnya. Hal ini membuktikan bahwa...",
+    options: ["Komponen biotik tidak dipengaruhi oleh perubahan komponen abiotik", "Kerusakan komponen abiotik (tanah dan air) memicu kerusakan fatal pada komponen biotik ekosistem", "Sedimentasi lumpur mempercepat pertumbuhan ikan karang", "Erosi tanah meningkatkan keindahan pemandangan bawah laut", "Pembangunan fisik sama sekali tidak berdampak pada hidrologi"],
+    answer: 1,
+    explanation: "Komponen abiotik dan biotik saling bergantung; kerusakan faktor abiotik seperti erosi tanah dan kekeruhan air dapat mematikan organisme biotik seperti terumbu karang."
+  },
+  {
+    question: "10. Di ruang binatu (laundry) hotel, staf mencampur air (H2O) dengan cairan pemutih yang mengandung senyawa Natrium Hipoklorit (NaClO) serta menggunakan alkohol 70% untuk sterilisasi permukaan. Berdasarkan klasifikasi materi, air murni (H2O) dan alkohol 70% berturut-turut digolongkan sebagai...",
+    options: ["Unsur dan Senyawa", "Senyawa dan Campuran homogen", "Campuran heterogen dan Unsur", "Unsur dan Campuran heterogen", "Campuran homogen dan Senyawa"],
+    answer: 1,
+    explanation: "Air murni (H2O) tersusun atas unsur hidrogen dan oksigen yang terikat secara kimia (senyawa), sedangkan alkohol 70% adalah larutan alkohol dan air yang tercampur merata (campuran homogen)."
+  },
+  {
+    question: "11. Di area dapur hotel (F&B Kitchen), sisa potongan sayuran dan buah-buahan difermentasi menggunakan mikroorganisme untuk dijadikan pupuk cair organik. Peristiwa perubahan sisa bahan organik menjadi pupuk cair melalui aktivitas mikroba ini merupakan contoh...",
+    options: ["Perubahan fisika wujud benda", "Perubahan wujud menyublim", "Perubahan kimia / biologi yang menghasilkan zat baru berkat aktivitas metabolisme makhluk hidup", "Perubahan fisika karena pelarutan zat padat", "Reaksi pemisahan campuran secara mekanis"],
+    answer: 2,
+    explanation: "Fermentasi oleh mikroorganisme mengubah struktur kimia bahan organik menjadi senyawa baru (pupuk cair/kompos), sehingga termasuk perubahan kimia/biologi."
+  },
+  {
+    question: "12. Teknisi kolam renang hotel menggunakan gas klorin (Cl2) untuk sterilisasi air kolam dan tabung gas oksigen (O2) untuk sistem pernapasan darurat. Zat tunggal gas oksigen (O2) dan klorin (Cl2) diklasifikasikan sebagai...",
+    options: ["Senyawa kimia kompleks", "Unsur (molekul unsur)", "Campuran heterogen gas", "Larutan elektrolit kuat", "Senyawa ionik padat"],
+    answer: 1,
+    explanation: "O2 dan Cl2 masing-masing hanya tersusun dari satu jenis atom saja (atom O dan atom Cl), sehingga digolongkan sebagai unsur dalam bentuk molekul unsur."
+  },
+  {
+    question: "13. Pembuatan sabun padat hotel dari reaksi antara minyak kelapa dan larutan alkali (NaOH) menghasilkan produk sabun dengan karakteristik busa dan sifat pembersih yang jauh berbeda dari bahan awalnya. Indikator utama terjadinya perubahan kimia dalam proses tersebut adalah...",
+    options: ["Perubahan wujud benda dari cair menjadi es batu", "Terbentuknya zat baru hasil reaksi kimia yang memiliki sifat berbeda dari zat semula", "Volume cairan menguap seluruhnya tanpa sisa", "Perubahan suhu air di sekitar wadah pencampuran", "Perubahan warna akibat pembekuan suhu ruang"],
+    answer: 1,
+    explanation: "Reaksi saponifikasi menghasilkan zat baru (sabun dan gliserol) yang sifat kimia dan fisikanya berbeda total dari minyak dan alkali."
+  },
+  {
+    question: "14. Mentega padat yang dicairkan di atas wajan panas untuk keperluan memasak di dapur hotel lalu dibiarkan membeku kembali saat dingin mengalami peristiwa perubahan...",
+    options: ["Kimia karena sifat zat berubah permanen", "Biologi karena melibatkan lemak nabati", "Fisika karena zat hanya mengalami perubahan wujud (reversible) tanpa membentuk zat baru", "Struktur inti atom zat", "Derajat keasaman secara drastis"],
+    answer: 2,
+    explanation: "Mencair dan membekunya mentega hanya mengubah wujud zat akibat perubahan suhu tanpa mengubah komposisi kimianya, sehingga bersifat reversible dan termasuk perubahan fisika."
+  },
+  {
+    question: "15. Ibu Siska menginap di sebuah hotel bintang lima untuk keperluan liburan keluarga. Ia memesan kamar tipe Deluxe, membutuhkan tempat tidur yang bersih, kamar mandi steril, sarapan pagi tepat waktu, serta koneksi internet cepat. Selain itu, ia juga memesan fasilitas tambahan berupa layanan pijat spa aromaterapi di kamar dan penyewaan mobil mewah ber-sopir untuk berkeliling kota. Berdasarkan studi kasus di atas, fasilitas hotel yang termasuk ke dalam kategori kebutuhan dasar (guest needs) bagi Ibu Siska adalah...",
+    options: ["Layanan pijat spa aromaterapi eksklusif", "Penyewaan mobil mewah ber-sopir pribadi", "Tempat tidur bersih, kamar mandi steril, dan sarapan pagi", "Upgrade kamar gratis ke tipe Presidential Suite", "Layanan antar jemput bandara VIP"],
+    answer: 2,
+    explanation: "Tempat tidur bersih, sanitasi kamar mandi, dan makanan (sarapan) merupakan kebutuhan pokok/dasar setiap tamu yang menginap di hotel, sedangkan spa dan mobil mewah termasuk keinginan tambahan."
+  },
+  {
+    question: "16. Kebijakan manajemen hotel dalam mengelola efisiensi energi listrik di kamar tamu (misalnya menggunakan sensor kartu key-card) tanpa mengurangi kualitas kenyamanan menginap tamu merupakan wujud penerapan...",
+    options: ["Hukum penawaran jasa akomodasi", "Prinsip ekonomi dalam pengelolaan operasional perhotelan", "Sistem monopoli pasar pariwisata", "Teori perdagangan internasional", "Hukum permintaan pasar bebas"],
+    answer: 1,
+    explanation: "Prinsip ekonomi adalah upaya menekan biaya/pengorbanan operasional (hemat listrik) seminimal mungkin untuk mencapai hasil pelayanan dan kenyamanan tamu yang optimal."
+  },
+  {
+    question: "17. Memasuki musim liburan panjang sekolah (peak season), tingkat okupansi (keterisian) kamar hotel di destinasi wisata melonjak drastis hingga 95%, sehingga pihak manajemen menaikkan harga sewa kamar dari tarif hari biasa (low season). Berdasarkan hukum permintaan dan penawaran dalam ekonomi pariwisata, alasan utama kenaikan harga kamar hotel pada saat peak season adalah...",
+    options: ["Jumlah ketersediaan kamar terbatas sementara jumlah permintaan (pesanan) wisatawan meningkat tajam", "Pemerintah mewajibkan seluruh hotel menaikkan tarif pajak", "Minat masyarakat untuk berwisata sedang berada pada titik terendah", "Biaya operasional kebersihan hotel turun drastis", "Jumlah kamar hotel bertambah dua kali lipat dalam sehari"],
+    answer: 0,
+    explanation: "Ketika permintaan melonjak tinggi sedangkan kapasitas kamar hotel tetap/terbatas, kelangkaan ketersediaan kamar mendorong harga sewa naik."
+  },
+  {
+    question: "18. Memasuki musim liburan panjang sekolah (peak season), tingkat okupansi (keterisian) kamar hotel di destinasi wisata melonjak drastis hingga 95%, sehingga pihak manajemen menaikkan harga sewa kamar dari tarif hari biasa (low season). Faktor non-harga yang menyebabkan kurva permintaan paket wisata bergeser ke kanan saat libur panjang sekolah tiba adalah...",
+    options: ["Penutupan akses jalan menuju objek wisata", "Penurunan pendapatan rata-rata masyarakat secara nasional", "Bertambahnya waktu luang keluarga dan meningkatnya selera berekreasi masyarakat", "Kenaikan harga tiket masuk seluruh museum", "Adanya larangan bepergian dari instansi terkait"],
+    answer: 2,
+    explanation: "Waktu luang saat liburan dan peningkatan selera berwisata merupakan faktor non-harga yang meningkatkan volume permintaan wisata sehingga kurva permintaan bergeser ke kanan."
+  },
+  {
+    question: "19. Restoran hotel mengalami kendala pasokan daging sapi akibat cuaca buruk di daerah pemasok, sehingga koki kepala harus segera mengambil keputusan strategis agar operasional restoran tetap berjalan lancar. Tindakan rasional yang paling tepat diambil oleh manajemen restoran hotel dalam menghadapi kelangkaan pasokan bahan baku tersebut adalah...",
+    options: ["Menutup restoran hotel sampai cuaca kembali normal tanpa pemberitahuan", "Mengganti menu makanan dengan variasi bahan lokal alternatif yang segar dan berkualitas setara", "Tetap membeli bahan baku langka dengan harga berkali-kali lipat lalu merugi", "Mengurangi porsi makanan tamu hotel hingga setengahnya", "Menghentikan seluruh layanan makanan bagi tamu yang menginap"],
+    answer: 1,
+    explanation: "Mencari barang substitusi (bahan pengganti) yang berkualitas setara merupakan langkah rasional dalam mengatasi kelangkaan bahan baku agar operasional dan kepuasan tamu tetap terjaga."
+  },
+  {
+    question: "20. Urutan kerja staf Front Office dalam menyambut tamu mulai dari menyapa dengan ramah, mencatat identitas tamu (check-in), memproses pembayaran, hingga menyerahkan kunci kamar mencerminkan penerapan...",
+    options: ["Skala prioritas dan standar operasional prosedur pelayanan", "Hukum penawaran kamar secara bebas", "Teori titik impas (break-even point)", "Struktur pasar persaingan sempurna", "Hukum permintaan pasar tenaga kerja"],
+    answer: 0,
+    explanation: "Mengurutkan tahapan kerja dari yang paling mendasar hingga penyelesaian transaksi merupakan bentuk skala prioritas dan SOP pelayanan hotel."
+  },
+  {
+    question: "21. Pemasokan dan pemesanan kamar hotel yang dilakukan wisatawan secara daring melalui aplikasi digital di ponsel pintar tanpa harus datang langsung ke meja resepsionis termasuk dalam bentuk...",
+    options: ["Pasar konkret", "Pasar abstrak", "Pasar monopoli tertutup", "Pasar tradisional lokal", "Bursa tenaga kerja"],
+    answer: 1,
+    explanation: "Pasar abstrak adalah pasar di mana penjual dan pembeli tidak bertemu secara fisik secara langsung, melainkan bertransaksi melalui perantara media digital/online."
+  },
+  {
+    question: "22. Perhatikan data tarif kamar tipe Superior di suatu hotel berikut:\n- Tarif Rp300.000 → Permintaan 200 kamar | Penawaran 80 kamar\n- Tarif Rp400.000 → Permintaan 160 kamar | Penawaran 120 kamar\n- Tarif Rp500.000 → Permintaan 120 kamar | Penawaran 120 kamar\n- Tarif Rp600.000 → Permintaan 80 kamar | Penawaran 160 kamar\n- Tarif Rp700.000 → Permintaan 40 kamar | Penawaran 200 kamar\nBerdasarkan data tersebut, hubungan antara besaran tarif kamar dan jumlah kamar yang diminta tamu membuktikan berlakunya hukum permintaan, yaitu...",
+    options: ["Semakin tinggi tarif kamar, semakin banyak jumlah kamar yang dipesan tamu", "Semakin tinggi tarif kamar, semakin sedikit jumlah kamar yang dipesan tamu", "Tarif kamar tidak berpengaruh terhadap jumlah pesanan tamu", "Jumlah kamar yang diminta selalu sama dengan penawaran hotel di setiap harga", "Penurunan harga menurunkan minat tamu menginap"],
+    answer: 1,
+    explanation: "Hukum permintaan menyatakan bahwa harga berbanding terbalik dengan jumlah barang/jasa yang diminta; pada tabel terlihat saat tarif naik dari Rp300.000 ke Rp700.000, permintaan turun dari 200 menjadi 40 kamar."
+  },
+  {
+    question: "23. Perhatikan data tarif kamar tipe Superior di suatu hotel berikut:\n- Tarif Rp300.000 → Permintaan 200 kamar | Penawaran 80 kamar\n- Tarif Rp400.000 → Permintaan 160 kamar | Penawaran 120 kamar\n- Tarif Rp500.000 → Permintaan 120 kamar | Penawaran 120 kamar\n- Tarif Rp600.000 → Permintaan 80 kamar | Penawaran 160 kamar\n- Tarif Rp700.000 → Permintaan 40 kamar | Penawaran 200 kamar\nBerdasarkan data tersebut, Harga Keseimbangan Pasar (Equilibrium Price) untuk sewa kamar hotel tersebut terjadi pada tingkat...",
+    options: ["Tarif Rp300.000 dengan jumlah 200 kamar", "Tarif Rp400.000 dengan jumlah 160 kamar", "Tarif Rp500.000 dengan jumlah 120 kamar", "Tarif Rp600.000 dengan jumlah 160 kamar", "Tarif Rp700.000 dengan jumlah 200 kamar"],
+    answer: 2,
+    explanation: "Harga keseimbangan pasar tercapai ketika jumlah permintaan sama dengan jumlah penawaran (Qd = Qs), yaitu pada tarif Rp500.000 dengan jumlah 120 kamar."
+  },
+  {
+    question: "24. Keunggulan penggunaan sistem pembayaran QRIS bagi pelaku UMKM suvenir pariwisata dibandingkan transaksi tunai konvensional adalah...",
+    options: ["Pedagang tidak perlu lagi membuat produk kerajinan tangan", "Transaksi lebih cepat, aman dari uang palsu, bebas repot uang kembalian, dan tercatat otomatis", "Produk otomatis terjual habis tanpa promosi", "Membebaskan pedagang dari kewajiban membayar pajak usaha", "Wisatawan dapat mengambil barang tanpa konfirmasi pembayaran"],
+    answer: 1,
+    explanation: "QRIS mempermudah transaksi nontunai dengan pencatatan keuangan otomatis, menghindari risiko uang palsu, dan tidak memerlukan uang kembalian fisik."
+  },
+  {
+    question: "25. Dampak langsung dari penyerapan tenaga kerja lokal oleh pihak hotel terhadap kesejahteraan ekonomi masyarakat desa adalah...",
+    options: ["Peningkatan pendapatan keluarga sehingga taraf hidup dan pemenuhan kebutuhan dasar lebih terjamin", "Penutupan seluruh lahan pertanian di sekitar desa wisata", "Lonjakan harga bahan pangan secara drastis di pasar tradisional", "Penurunan minat belajar pemuda desa pada bidang kejuruan", "Pengalihan seluruh hak milik tanah warga kepada pihak hotel"],
+    answer: 0,
+    explanation: "Penyerapan tenaga kerja lokal memberikan penghasilan tetap bagi warga sekitar sehingga meningkatkan daya beli dan kesejahteraan ekonomi keluarga."
+  }
+];
+
+// Simbol geometri & huruf opsi
+const optionShapes = ["▲", "◆", "●", "■", "★"];
+const optionLetters = ["A", "B", "C", "D", "E"];
+
+// State Permainan
+const TOTAL_TIME_SECONDS = 40 * 60; // 40 menit
+let currentIndex = 0;
+let userAnswers = new Array(quizData.length).fill(null);
+let questionDurations = new Array(quizData.length).fill(0);
+let questionStartTimeMs = null;
+let quizEndTimeMs = null;
+let remainingSeconds = TOTAL_TIME_SECONDS;
+let timerInterval = null;
+let playerName = "";
+let playerClass = "";
+let isQuizActive = false;
+let violationCount = 0;
+let violationLogs = [];
+let lastViolationTimestamp = 0;
+let screenGuardInterval = null;
+let initialViewportWidth = 0;
+let initialViewportHeight = 0;
+let isFirstAttempt = true;
+let cachedFirstAttemptResult = null;
+let cachedPdfFile = null;
+let isInputFocused = false;
+
+// Helper Penyimpanan Status Percobaan Pertama
+function hasCompletedFirstAttempt() {
+  try {
+    return localStorage.getItem(STORAGE_FIRST_ATTEMPT_KEY) === "true";
+  } catch (e) {
+    return false;
+  }
+}
+
+function markFirstAttemptCompleted() {
+  try {
+    localStorage.setItem(STORAGE_FIRST_ATTEMPT_KEY, "true");
+  } catch (e) {}
+}
+
+// Fungsi Membuat Kode Validasi Digital Integritas Hasil
+function generateValidationCode(data) {
+  const durationSig = (data.questionDurations || []).join(",");
+  const raw = `${data.playerName}|${data.playerClass}|${data.finalScore}|${data.correctCount}|${data.remainingSeconds}|${data.violationCount}|${data.violationSummary || ""}|${data.answerSummaryString}|${durationSig}`;
+  let h1 = 0x811c9dc5;
+  let h2 = 0x01000193;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw.charCodeAt(i);
+    h1 ^= ch;
+    h1 = Math.imul(h1, 0x01000193);
+    h2 ^= ch + i;
+    h2 = Math.imul(h2, 0x85ebca6b);
+  }
+  const part1 = (h1 >>> 0).toString(16).toUpperCase().padStart(8, "0");
+  const part2 = (h2 >>> 0).toString(16).toUpperCase().padStart(8, "0");
+  return `IPAS-${part1}-${part2}`;
+}
+
+// Referensi Elemen DOM
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const resultScreen = document.getElementById("result-screen");
+const confirmModal = document.getElementById("confirm-modal");
+const securityModal = document.getElementById("security-modal");
+const infoModal = document.getElementById("info-modal");
+const btnToggleReview = document.getElementById("btn-toggle-review");
+const reviewWrapper = document.getElementById("review-wrapper");
+const repeatWarningStart = document.getElementById("repeat-warning-start");
+const firstAttemptSubmitBox = document.getElementById("first-attempt-submit-box");
+const repeatAttemptInfoBox = document.getElementById("repeat-attempt-info-box");
+const pdfStatusBadge = document.getElementById("pdf-status-badge");
+const btnDownloadPdf = document.getElementById("btn-download-pdf");
+const btnSharePdf = document.getElementById("btn-share-pdf");
+const btnCopyResult = document.getElementById("btn-copy-result");
+
+// Pantau fokus input agar keyboard HP tidak memicu peringatan layar
+["player-name", "player-class"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener("focus", () => { isInputFocused = true; });
+    el.addEventListener("blur", () => {
+      setTimeout(() => { isInputFocused = false; }, 300);
+    });
+  }
+});
+
+// Modal Info Universal
+function showInfoModal(title, text) {
+  document.getElementById("info-modal-title").textContent = title;
+  document.getElementById("info-modal-text").textContent = text;
+  infoModal.classList.remove("hidden");
+}
+
+document.getElementById("btn-close-info").addEventListener("click", () => {
+  infoModal.classList.add("hidden");
+});
+
+// Tampilkan peringatan di layar awal jika sudah pernah mengerjakan
+function syncStartScreenAttemptNotice() {
+  if (hasCompletedFirstAttempt()) {
+    repeatWarningStart.classList.remove("hidden");
+  } else {
+    repeatWarningStart.classList.add("hidden");
+  }
+}
+syncStartScreenAttemptNotice();
+
+// Fungsi Reset & Toggle Rekap Jawaban
+function setReviewVisibility(isVisible) {
+  btnToggleReview.setAttribute("aria-expanded", String(isVisible));
+  if (isVisible) {
+    reviewWrapper.classList.remove("hidden");
+  } else {
+    reviewWrapper.classList.add("hidden");
+  }
+}
+
+btnToggleReview.addEventListener("click", () => {
+  const isCurrentlyHidden = reviewWrapper.classList.contains("hidden");
+  setReviewVisibility(isCurrentlyHidden);
+});
+
+// Fungsi Masuk & Keluar Mode Fullscreen (Hanya Desktop agar mobile tidak error)
+function enterFullScreen() {
+  if (IS_MOBILE) return;
+  const elem = document.documentElement;
+  try {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (elem.requestFullscreen) {
+        const p = elem.requestFullscreen();
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+  } catch (e) {}
+}
+
+function exitFullScreen() {
+  try {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) {
+        const p = document.exitFullscreen();
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+  } catch (e) {}
+}
+
+// ============================================================================
+// SISTEM PENGAMANAN LAYAR RAMAH MOBILE (BEBAS FALSE-POSITIVE ANDROID & IOS)
+// ============================================================================
+function getStableViewportSize() {
+  const w = document.documentElement.clientWidth || window.innerWidth;
+  const h = document.documentElement.clientHeight || window.innerHeight;
+  return { w, h };
+}
+
+function isSplitScreenOrFloatingActive() {
+  if (isInputFocused) return { detected: false };
+
+  const { w: vw, h: vh } = getStableViewportSize();
+  const sw = window.screen && window.screen.width ? window.screen.width : vw;
+  const sh = window.screen && window.screen.height ? window.screen.height : vh;
+
+  const isLandscape = vw > vh;
+  const expectedFullW = isLandscape ? Math.max(sw, sh) : Math.min(sw, sh);
+  const expectedFullH = isLandscape ? Math.min(sw, sh) : Math.max(sw, sh);
+
+  const widthRatio = vw / Math.max(expectedFullW, 1);
+  const heightRatio = vh / Math.max(expectedFullH, 1);
+
+  const minHeightRatio = IS_MOBILE ? 0.52 : 0.72;
+  const minWidthRatio = IS_MOBILE ? 0.65 : 0.78;
+
+  if (widthRatio < minWidthRatio || heightRatio < minHeightRatio) {
+    return {
+      detected: true,
+      type: "MODE 2 LAYAR (SPLIT-SCREEN)",
+      reason: "Terdeteksi tampilan 2 layar (Split-Screen) atau jendela diperkecil! Kembalikan browser ke tampilan 1 layar penuh."
+    };
+  }
+
+  if (initialViewportWidth > 0 && initialViewportHeight > 0) {
+    const initialWasLandscape = initialViewportWidth > initialViewportHeight;
+    if (initialWasLandscape === isLandscape) {
+      if (vh < initialViewportHeight * 0.58 || vw < initialViewportWidth * 0.68) {
+        return {
+          detected: true,
+          type: "JENDELA MENGAMBANG / RESIZE",
+          reason: "Ukuran layar kuis menyusut drastis akibat tampilan 2 layar atau jendela mengambang (Floating Window)."
+        };
+      }
+    } else {
+      initialViewportWidth = vw;
+      initialViewportHeight = vh;
+    }
+  }
+
+  if (document.pictureInPictureElement) {
+    return {
+      detected: true,
+      type: "LAYAR MENGAMBANG (PIP)",
+      reason: "Terdeteksi jendela video/layar mengambang (Picture-in-Picture). Tutup jendela mengambang untuk melanjutkan."
+    };
+  }
+
+  return { detected: false };
+}
+
+function triggerSecurityWarning(reason, violationType = "PERPINDAHAN LAYAR") {
+  if (!isQuizActive) return;
+
+  const now = Date.now();
+  if (now - lastViolationTimestamp < 2000 && !securityModal.classList.contains("hidden")) {
+    return;
+  }
+  lastViolationTimestamp = now;
+
+  violationCount++;
+  if (!violationLogs.includes(violationType)) {
+    violationLogs.push(violationType);
+  }
+
+  document.getElementById("security-type-badge").textContent = `⚠️ ${violationType}`;
+  document.getElementById("security-text").textContent = reason;
+  document.getElementById("violation-counter").textContent = `Pelanggaran tercatat: ${violationCount} kali`;
+  securityModal.classList.remove("hidden");
+}
+
+function startScreenSecurityGuard() {
+  stopScreenSecurityGuard();
+  const { w, h } = getStableViewportSize();
+  initialViewportWidth = w;
+  initialViewportHeight = h;
+
+  screenGuardInterval = setInterval(() => {
+    if (!isQuizActive) return;
+
+    if (!IS_MOBILE && typeof document.hasFocus === "function" && !document.hasFocus()) {
+      triggerSecurityWarning(
+        "Fokus aplikasi terlepas! Terdeteksi membuka aplikasi lain atau jendela mengambang.",
+        "HILANG FOKUS LAYAR"
+      );
+      return;
+    }
+
+    const splitCheck = isSplitScreenOrFloatingActive();
+    if (splitCheck.detected) {
+      triggerSecurityWarning(splitCheck.reason, splitCheck.type);
+    }
+  }, 1500);
+}
+
+function stopScreenSecurityGuard() {
+  if (screenGuardInterval) {
+    clearInterval(screenGuardInterval);
+    screenGuardInterval = null;
+  }
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && isQuizActive) {
+    triggerSecurityWarning(
+      "Anda terdeteksi berpindah tab, membuka aplikasi lain, atau meminimalkan browser saat kuis sedang berlangsung!",
+      "PINDAH TAB / LAYAR LAIN"
+    );
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (!isQuizActive) return;
+  const splitCheck = isSplitScreenOrFloatingActive();
+  if (splitCheck.detected) {
+    triggerSecurityWarning(splitCheck.reason, splitCheck.type);
+  }
+});
+
+document.addEventListener("contextmenu", (e) => {
+  if (isQuizActive) {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (!isQuizActive) return;
+  const key = (e.key || "").toLowerCase();
+  if (
+    e.key === "Escape" ||
+    e.key === "F11" ||
+    ((e.ctrlKey || e.metaKey) && ["t", "n", "w", "tab", "c", "v", "u", "s", "p"].includes(key)) ||
+    (e.altKey && key === "tab")
+  ) {
+    e.preventDefault();
+    triggerSecurityWarning(
+      "Tombol pintasan sistem terdeteksi! Tetap berada di layar kuis hingga seluruh soal selesai.",
+      "TOMBOL PINTASAN SISTEM"
+    );
+  }
+});
+
+function handleFullscreenChange() {
+  if (IS_MOBILE) return;
+  const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+  if (!isFs && isQuizActive) {
+    triggerSecurityWarning(
+      "Anda keluar dari mode layar penuh (Fullscreen). Tekan tombol di bawah untuk mengunci kembali layar kuis.",
+      "KELUAR LAYAR PENUH"
+    );
+  }
+}
+
+document.addEventListener("fullscreenchange", handleFullscreenChange);
+document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+
+document.getElementById("btn-resume-fullscreen").addEventListener("click", () => {
+  const splitCheck = isSplitScreenOrFloatingActive();
+  if (splitCheck.detected) {
+    document.getElementById("security-type-badge").textContent = `⚠️ ${splitCheck.type}`;
+    document.getElementById("security-text").textContent =
+      "Layar masih terdeteksi dalam mode 2 layar (Split-Screen) atau jendela mengambang! Tutup layar kedua terlebih dahulu lalu tekan kembali tombol di bawah.";
+    return;
+  }
+  enterFullScreen();
+  securityModal.classList.add("hidden");
+  window.focus();
+});
+
+// Mulai Kuis
+function handleStartQuiz() {
+  const nameEl = document.getElementById("player-name");
+  const classEl = document.getElementById("player-class");
+  const nameInput = nameEl ? nameEl.value.trim() : "";
+  const classInput = classEl ? classEl.value.trim() : "";
+  const errorMsg = document.getElementById("form-error");
+
+  if (!nameInput || !classInput) {
+    if (errorMsg) errorMsg.style.display = "block";
+    if (!nameInput && nameEl) nameEl.focus();
+    else if (!classInput && classEl) classEl.focus();
+    return;
+  }
+
+  // Lepaskan fokus input agar keyboard virtual HP langsung menutup rapi
+  if (nameEl) nameEl.blur();
+  if (classEl) classEl.blur();
+  isInputFocused = false;
+
+  if (errorMsg) errorMsg.style.display = "none";
+  playerName = nameInput;
+  playerClass = classInput;
+
+  isFirstAttempt = !hasCompletedFirstAttempt();
+
+  document.getElementById("display-name").textContent = playerName;
+  document.getElementById("display-class").textContent = playerClass;
+  document.getElementById("avatar-initial").textContent = playerName.charAt(0).toUpperCase();
+
+  currentIndex = 0;
+  userAnswers = new Array(quizData.length).fill(null);
+  questionDurations = new Array(quizData.length).fill(0);
+  questionStartTimeMs = Date.now();
+  remainingSeconds = TOTAL_TIME_SECONDS;
+  quizEndTimeMs = Date.now() + TOTAL_TIME_SECONDS * 1000;
+  violationCount = 0;
+  violationLogs = [];
+  lastViolationTimestamp = 0;
+  isQuizActive = true;
+
+  startScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  quizScreen.classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  renderNavigator();
+  renderQuestion();
+  startTimer();
+
+  setTimeout(() => {
+    enterFullScreen();
+    startScreenSecurityGuard();
+  }, 250);
+}
+
+const btnStart = document.getElementById("btn-start");
+if (btnStart) {
+  btnStart.addEventListener("click", handleStartQuiz);
+}
+
+// Timer 40 Menit Akurat Berbasis Timestamp
+function startTimer() {
+  clearInterval(timerInterval);
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    if (!isQuizActive) return;
+    if (quizEndTimeMs) {
+      remainingSeconds = Math.max(0, Math.ceil((quizEndTimeMs - Date.now()) / 1000));
+    } else {
+      remainingSeconds--;
+    }
+    updateTimerUI();
+    if (remainingSeconds <= 0) {
+      clearInterval(timerInterval);
+      finishQuiz();
+    }
+  }, 1000);
+}
+
+function formatTime(sec) {
+  const safeSec = Math.max(0, Math.floor(sec || 0));
+  const m = Math.floor(safeSec / 60).toString().padStart(2, "0");
+  const s = (safeSec % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+function formatQuestionDuration(sec) {
+  const safeSec = Math.max(0, Math.round(sec || 0));
+  if (safeSec < 60) {
+    return `${safeSec} dtk`;
+  }
+  const m = Math.floor(safeSec / 60);
+  const s = safeSec % 60;
+  return s > 0 ? `${m} mnt ${s} dtk` : `${m} mnt`;
+}
+
+// Rekam waktu yang dihabiskan pada butir soal sebelum berpindah atau selesai
+function recordCurrentQuestionElapsedTime() {
+  if (!isQuizActive || questionStartTimeMs === null) return;
+  const now = Date.now();
+  const elapsedSeconds = (now - questionStartTimeMs) / 1000;
+  questionDurations[currentIndex] = (questionDurations[currentIndex] || 0) + elapsedSeconds;
+  questionStartTimeMs = now;
+}
+
+function updateTimerUI() {
+  const timerEl = document.getElementById("timer-display");
+  timerEl.textContent = `⏱️ ${formatTime(remainingSeconds)}`;
+  if (remainingSeconds <= 300) {
+    timerEl.classList.add("danger");
+  } else {
+    timerEl.classList.remove("danger");
+  }
+}
+
+// Render Soal Aktif
+function renderQuestion() {
+  const item = quizData[currentIndex];
+  const total = quizData.length;
+
+  document.getElementById("question-counter").textContent = `Soal ${currentIndex + 1} / ${total}`;
+  document.getElementById("progress-fill").style.width = `${((currentIndex + 1) / total) * 100}%`;
+  document.getElementById("question-text").textContent = item.question;
+
+  const optionsContainer = document.getElementById("options-container");
+  optionsContainer.innerHTML = "";
+
+  const chosen = userAnswers[currentIndex];
+
+  item.options.forEach((optText, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `option-btn opt-${idx}`;
+
+    if (chosen !== null) {
+      if (chosen === idx) {
+        btn.classList.add("selected");
+      } else {
+        btn.classList.add("dimmed");
+      }
+    }
+
+    btn.innerHTML = `
+      <span class="shape-icon">${optionShapes[idx]}</span>
+      <span class="option-label-wrap">
+        <span class="option-letter">${optionLetters[idx]}.</span>${optText}
+      </span>
+      ${chosen === idx ? '<span class="selected-tag">Dipilih</span>' : ""}
+    `;
+
+    btn.addEventListener("click", () => {
+      userAnswers[currentIndex] = idx;
+      renderQuestion();
+      updateNavigatorState();
+    });
+
+    optionsContainer.appendChild(btn);
+  });
+
+  // Tombol Navigasi
+  const btnPrev = document.getElementById("btn-prev");
+  const btnNext = document.getElementById("btn-next");
+  const btnFinish = document.getElementById("btn-finish");
+  const allAnswered = userAnswers.every(a => a !== null);
+
+  btnPrev.disabled = currentIndex === 0;
+  btnNext.disabled = currentIndex === total - 1;
+  btnFinish.disabled = !allAnswered;
+
+  if (allAnswered) {
+    btnFinish.classList.remove("hidden");
+    btnFinish.title = "Semua soal terjawab. Klik untuk menyelesaikan kuis.";
+  } else if (currentIndex === total - 1) {
+    btnFinish.classList.remove("hidden");
+    btnFinish.title = "Jawab semua 25 soal terlebih dahulu untuk menyelesaikan kuis.";
+  } else {
+    btnFinish.classList.add("hidden");
+  }
+
+  if (currentIndex === total - 1) {
+    btnNext.classList.add("hidden");
+  } else {
+    btnNext.classList.remove("hidden");
+  }
+
+  updateNavigatorState();
+}
+
+// Navigator Nomor Soal
+function renderNavigator() {
+  const navGrid = document.getElementById("nav-grid");
+  navGrid.innerHTML = "";
+  quizData.forEach((_, idx) => {
+    const numBtn = document.createElement("button");
+    numBtn.type = "button";
+    numBtn.className = "nav-num";
+    numBtn.textContent = idx + 1;
+    numBtn.addEventListener("click", () => {
+      recordCurrentQuestionElapsedTime();
+      currentIndex = idx;
+      renderQuestion();
+    });
+    navGrid.appendChild(numBtn);
+  });
+}
+
+function updateNavigatorState() {
+  const buttons = document.querySelectorAll(".nav-num");
+  let answeredCount = 0;
+
+  buttons.forEach((btn, idx) => {
+    btn.classList.remove("answered", "current");
+    if (userAnswers[idx] !== null) {
+      btn.classList.add("answered");
+      answeredCount++;
+    }
+    if (idx === currentIndex) {
+      btn.classList.add("current");
+    }
+  });
+
+  document.getElementById("answered-count").textContent = `Terjawab: ${answeredCount} / ${quizData.length}`;
+}
+
+// Event Navigasi
+document.getElementById("btn-prev").addEventListener("click", () => {
+  if (currentIndex > 0) {
+    recordCurrentQuestionElapsedTime();
+    currentIndex--;
+    renderQuestion();
+  }
+});
+
+document.getElementById("btn-next").addEventListener("click", () => {
+  if (currentIndex < quizData.length - 1) {
+    recordCurrentQuestionElapsedTime();
+    currentIndex++;
+    renderQuestion();
+  }
+});
+
+document.getElementById("btn-finish").addEventListener("click", () => {
+  const firstUnanswered = userAnswers.indexOf(null);
+  if (firstUnanswered !== -1) {
+    recordCurrentQuestionElapsedTime();
+    currentIndex = firstUnanswered;
+    renderQuestion();
+    return;
+  }
+  document.getElementById("confirm-text").textContent = "Semua 25 soal sudah dijawab! Siap melihat skor akhir dan menyiapkan bukti hasil PDF?";
+  confirmModal.classList.remove("hidden");
+});
+
+document.getElementById("btn-cancel-finish").addEventListener("click", () => {
+  confirmModal.classList.add("hidden");
+});
+
+document.getElementById("btn-confirm-finish").addEventListener("click", () => {
+  confirmModal.classList.add("hidden");
+  finishQuiz();
+});
+
+// Event Unduh / Buka PDF (100% Offline, Ramah Android & iOS Safari)
+btnDownloadPdf.addEventListener("click", () => {
+  if (!cachedFirstAttemptResult) return;
+  const pdfResult = cachedPdfFile || createOfflineCertificatePDF(cachedFirstAttemptResult);
+  cachedPdfFile = pdfResult;
+  const ok = triggerUniversalPdfDownload(pdfResult, true);
+  if (ok) {
+    if (IS_IOS) {
+      showInfoModal(
+        "📄 Dokumen PDF Dibuka",
+        "Jika dokumen PDF terbuka di tab baru Safari, tekan ikon Bagikan (Share ⬆️) di bagian bawah lalu pilih 'Simpan ke File' (Save to Files)."
+      );
+    } else {
+      showInfoModal(
+        "📥 File PDF Berhasil Diunduh",
+        `Dokumen "${pdfResult.fileName}" telah disimpan ke folder Unduhan (Downloads / File Saya) di perangkat Anda.`
+      );
+    }
+  }
+});
+
+// Helper Pembuat Teks Laporan
+function buildReportSummaryText(res, pdfFileName) {
+  return (
+    `*HASIL ASAS GANJIL PROJEK IPAS (PARIWISATA)*\n` +
+    `Nama Siswa : ${res.playerName}\n` +
+    `Kelas : ${res.playerClass}\n` +
+    `Skor Akhir : *${res.finalScore} / 100*\n` +
+    `Benar / Salah : ${res.correctCount} Benar | ${res.wrongCount} Salah\n` +
+    `Sisa Waktu : ${formatTime(res.remainingSeconds)}\n` +
+    `Peringatan Layar : ${res.violationCount} kali\n` +
+    `Kode Validasi : ${res.validationCode}\n\n` +
+    `_(Dokumen PDF: ${pdfFileName || "Hasil_IPAS_Pariwisata.pdf"})_`
+  );
+}
+
+// Event Bagikan File PDF Langsung via Menu Share HP (Android Chrome & iOS Safari)
+btnSharePdf.addEventListener("click", async () => {
+  if (!cachedFirstAttemptResult) return;
+  const pdfResult = cachedPdfFile || createOfflineCertificatePDF(cachedFirstAttemptResult);
+  cachedPdfFile = pdfResult;
+
+  if (!pdfResult || !pdfResult.file || typeof navigator.share !== "function") {
+    triggerUniversalPdfDownload(pdfResult, true);
+    return;
+  }
+
+  const shareText = buildReportSummaryText(cachedFirstAttemptResult, pdfResult.fileName);
+
+  try {
+    await navigator.share({
+      title: "Sertifikat Hasil ASAS IPAS Pariwisata",
+      text: shareText,
+      files: [pdfResult.file]
+    });
+  } catch (err) {
+    if (!err || err.name !== "AbortError") {
+      triggerUniversalPdfDownload(pdfResult, true);
+    }
+  }
+});
+
+// Event Salin Teks Nilai
+btnCopyResult.addEventListener("click", async () => {
+  if (!cachedFirstAttemptResult) return;
+  const pdfResult = cachedPdfFile || createOfflineCertificatePDF(cachedFirstAttemptResult);
+  const textToCopy = buildReportSummaryText(cachedFirstAttemptResult, pdfResult ? pdfResult.fileName : "");
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(textToCopy);
+      showInfoModal(
+        "📋 Teks Nilai Disalin!",
+        "Rekap nilai dan kode validasi sudah disalin ke clipboard."
+      );
+      return;
+    }
+  } catch (e) {}
+
+  // Fallback execCommand untuk WebView lama
+  const ta = document.createElement("textarea");
+  ta.value = textToCopy;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    showInfoModal(
+      "📋 Teks Nilai Disalin!",
+      "Rekap nilai dan kode validasi sudah disalin ke clipboard."
+    );
+  } catch (e) {
+    showInfoModal("ℹ️ Info", "Silakan tangkap layar (screenshot) halaman hasil ini atau unduh PDF.");
+  }
+  document.body.removeChild(ta);
+});
+
+// Selesai & Hitung Hasil
+function finishQuiz() {
+  recordCurrentQuestionElapsedTime();
+  questionStartTimeMs = null;
+  isQuizActive = false;
+  stopScreenSecurityGuard();
+  clearInterval(timerInterval);
+  securityModal.classList.add("hidden");
+  exitFullScreen();
+
+  setReviewVisibility(false);
+  quizScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  let correctCount = 0;
+  quizData.forEach((item, idx) => {
+    if (userAnswers[idx] === item.answer) {
+      correctCount++;
+    }
+  });
+
+  const wrongCount = quizData.length - correctCount;
+  const finalScore = correctCount * 4;
+  const answerSummaryString = userAnswers
+    .map((ans, i) => `${i + 1}:${ans !== null ? optionLetters[ans] : "-"}`)
+    .join(" ");
+  const roundedDurations = questionDurations.map((sec) => Math.round(sec));
+
+  document.getElementById("result-player-info").textContent = `${playerName} • ${playerClass}`;
+  document.getElementById("final-score").textContent = finalScore;
+  document.getElementById("stat-correct").textContent = `${correctCount} Soal`;
+  document.getElementById("stat-wrong").textContent = `${wrongCount} Soal`;
+  document.getElementById("stat-time").textContent = formatTime(remainingSeconds);
+
+  if (isFirstAttempt) {
+    markFirstAttemptCompleted();
+
+    const nowStr = new Date().toLocaleString("id-ID", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    });
+
+    const resultPayload = {
+      playerName,
+      playerClass,
+      finalScore,
+      correctCount,
+      wrongCount,
+      remainingSeconds,
+      violationCount,
+      violationSummary: violationLogs.length > 0 ? violationLogs.join(", ") : "Aman",
+      completedAt: nowStr,
+      userAnswers: [...userAnswers],
+      questionDurations: roundedDurations,
+      answerSummaryString,
+      validationCode: ""
+    };
+    resultPayload.validationCode = generateValidationCode(resultPayload);
+    cachedFirstAttemptResult = resultPayload;
+
+    cachedPdfFile = createOfflineCertificatePDF(resultPayload);
+    if (cachedPdfFile) {
+      const autoDownloaded = triggerUniversalPdfDownload(cachedPdfFile, false);
+      if (autoDownloaded) {
+        pdfStatusBadge.textContent = `✅ PDF Terunduh: ${cachedPdfFile.fileName} (${resultPayload.validationCode})`;
+      } else {
+        pdfStatusBadge.textContent = `✅ PDF Siap: ${cachedPdfFile.fileName} (${resultPayload.validationCode}) — Tekan tombol di bawah untuk mengunduh/kirim.`;
+      }
+
+      let canShareFiles = false;
+      try {
+        canShareFiles = Boolean(
+          cachedPdfFile.file &&
+          typeof navigator.share === "function" &&
+          typeof navigator.canShare === "function" &&
+          navigator.canShare({ files: [cachedPdfFile.file] })
+        );
+      } catch (e) {
+        canShareFiles = false;
+      }
+
+      if (canShareFiles) {
+        btnSharePdf.classList.remove("hidden");
+      } else {
+        btnSharePdf.classList.add("hidden");
+      }
+    }
+
+    firstAttemptSubmitBox.classList.remove("hidden");
+    repeatAttemptInfoBox.classList.add("hidden");
+  } else {
+    cachedFirstAttemptResult = null;
+    cachedPdfFile = null;
+    firstAttemptSubmitBox.classList.add("hidden");
+    repeatAttemptInfoBox.classList.remove("hidden");
+  }
+
+  let message = "";
+  if (finalScore >= 90) {
+    message = "🌟 Luar Biasa! Penguasaan materi IPAS Pariwisata sangat memuaskan!";
+  } else if (finalScore >= 75) {
+    message = "👏 Bagus Sekali! Pemahamanmu sudah sangat baik, pertahankan!";
+  } else if (finalScore >= 60) {
+    message = "👍 Cukup Baik! Pelajari kembali pembahasan soal yang masih keliru.";
+  } else {
+    message = "💪 Tetap Semangat! Baca pembahasan di bawah lalu coba main ulang.";
+  }
+  document.getElementById("appreciation-msg").textContent = message;
+
+  // Render Pembahasan
+  const reviewList = document.getElementById("review-list");
+  reviewList.innerHTML = "";
+
+  quizData.forEach((item, idx) => {
+    const userAns = userAnswers[idx];
+    const isCorrect = userAns === item.answer;
+    const isUnanswered = userAns === null;
+    const durFormatted = formatQuestionDuration(roundedDurations[idx]);
+
+    let statusClass = isCorrect ? "correct" : (isUnanswered ? "unanswered" : "wrong");
+    let statusLabel = isCorrect ? "✔ Benar (+4)" : (isUnanswered ? "⚠ Tidak Dijawab (0)" : "✘ Salah (0)");
+
+    const userAnsText = isUnanswered
+      ? "<em>Tidak dijawab</em>"
+      : `${optionLetters[userAns]}. ${item.options[userAns]}`;
+
+    const correctAnsText = `${optionLetters[item.answer]}. ${item.options[item.answer]}`;
+
+    const div = document.createElement("div");
+    div.className = `review-item ${statusClass}`;
+    div.innerHTML = `
+      <div class="review-top">
+        <strong>Nomor ${idx + 1} <span style="font-weight:600; color:#64748b; font-size:0.85rem;">(⏱️ ${durFormatted})</span></strong>
+        <span class="status-badge ${statusClass}">${statusLabel}</span>
+      </div>
+      <div class="review-q">${item.question}</div>
+      <div class="review-ans"><strong>Jawaban Kamu:</strong> ${userAnsText}</div>
+      <div class="review-ans" style="color:#065f46;"><strong>Kunci Jawaban:</strong> ${correctAnsText}</div>
+      <div class="explanation-box"><strong>💡 Pembahasan:</strong> ${item.explanation}</div>
+    `;
+    reviewList.appendChild(div);
+  });
+}
+
+// Tombol Tampilkan & Gulir ke Rekap Jawaban & Pembahasan Singkat
+document.getElementById("btn-scroll-review").addEventListener("click", () => {
+  const reviewHeader = document.getElementById("review-section");
+
+  setReviewVisibility(true);
+  reviewHeader.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  reviewHeader.classList.add("highlight-focus");
+  setTimeout(() => {
+    reviewHeader.classList.remove("highlight-focus");
+  }, 1600);
+});
+
+// Tombol Main Ulang
+document.querySelectorAll(".btn-restart").forEach(btn => {
+  btn.addEventListener("click", () => {
+    isQuizActive = false;
+    stopScreenSecurityGuard();
+    isFirstAttempt = false;
+    questionStartTimeMs = null;
+    cachedFirstAttemptResult = null;
+    cachedPdfFile = null;
+    clearInterval(timerInterval);
+    securityModal.classList.add("hidden");
+    infoModal.classList.add("hidden");
+    exitFullScreen();
+    syncStartScreenAttemptNotice();
+    setReviewVisibility(false);
+    resultScreen.classList.add("hidden");
+    quizScreen.classList.add("hidden");
+    startScreen.classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+</script>
+</body>
+</html>
